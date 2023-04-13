@@ -11,6 +11,8 @@ vec3 up(0,1,0);
 vec3 left(1,0,0);
 vec3 fwd(0,0,1);
 vec3 none(0,0,0);
+const int drawspace = 25;
+const int distance_from = 7;
 
 vec3 projectscreen(float screendist,vec3* point,float screenmulti) {
     vec3 screen(0,0,screendist);
@@ -104,10 +106,10 @@ vec3 trianglenormal(vec3 p1, vec3 p2, vec3 p3) {
 int main() {
 
     meshreader::mesh object = {};  
-    meshreader::meshFromFile("res/lowmonkey.obj",&object);
+    meshreader::meshFromFile("res/cube.obj",&object);
 
-    int screensize = 50;
-    int screensizew = 50;
+    int screensize = 70;
+    int screensizew = 70;
 
     int pixelbuffer[screensizew][screensize] = {0};
     int depthbuffer[screensizew][screensize] = {0};
@@ -154,14 +156,14 @@ int main() {
             v3 = rotatey(yaw*rad,rotatex(pitch*rad,rotatez(roll*rad,v3)));
 
             vec3 center = (v1+v2+v3)/3; //get midpoint of each vertex
-            float depth = (center-vec3(0,0,8)).magnitude(); //get distance from viewport
+            float depth = (center-vec3(0,0,4)).magnitude(); //get distance from viewport
           
             vec3 normal = trianglenormal(v1,v2,v3);
           
             //project each vertex to the viewport
-            p1 = projectscreen(8,&v1,120); 
-            p2 = projectscreen(8,&v2,120);   
-            p3 = projectscreen(8,&v3,120);
+            p1 = projectscreen(distance_from,&v1,120); 
+            p2 = projectscreen(distance_from,&v2,120);   
+            p3 = projectscreen(distance_from,&v3,120);
 
             //center each vertex
             p1.x += screensizew/2; 
@@ -182,8 +184,8 @@ int main() {
             vec3 sp(0,0,0);
             vec3 screencenter = (p1+p2+p3)/3;
            
-            for (int i = screencenter.x-5; i < screencenter.x+5; i++){
-                for (int j = screencenter.y-5; j < screencenter.y+5; j++)
+            for (int i = screencenter.x-drawspace; i < screencenter.x+drawspace; i++){
+                for (int j = screencenter.y-drawspace; j < screencenter.y+drawspace; j++)
                 {
                     if (i >= 0 && i < screensizew && j >= 0 && j < screensize) {
 
