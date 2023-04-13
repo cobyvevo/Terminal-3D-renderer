@@ -1,0 +1,29 @@
+{
+	"folders":
+	[
+			{
+				"path": "bin/..",
+				"file_exclude_patterns": ["*.sublime-project"],
+			}
+	],
+
+	"build_systems":
+	[
+		{
+			"name": "Debug Build 64bit",
+			"working_dir": "${project_path}",
+			"cmd": "g++ -c ./src/*.cpp -std=c++20 -g -Wall -m64 -I include && g++ *.o -o ./bin/debug/main && xterm ./bin/debug/main",
+			
+			"selector": "source.c++",
+			"shell": true,
+		},
+		{
+			"name": "Release Build 64bit",
+			"working_dir": "${project_path}",
+			"cmd": "g++ -c ./src/*.cpp -std=c++20 -O3 -Wall -m64 -I include && g++ *.o -o ./bin/release/main -s && xterm ./bin/release/main",
+			
+			"selector": "source.c++",
+			"shell": true,
+		}
+	]
+}
